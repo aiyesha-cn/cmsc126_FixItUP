@@ -16,7 +16,7 @@ html, body, #root {
 
 /* Top Nav */
 .top-nav {
-  background-color: #0a2144;
+  background-color: #052a38;
   color: #fff;
   padding: 15px 40px;
   display: flex;
@@ -195,53 +195,9 @@ html, body, #root {
 }
 
 .submit-button:hover {
-    background-color: #adb5bd;
+    background-color: #cd972b;
 }
 
 .submit-button svg {
   margin-right: 10px;
-}
-
-/*Responsive */
-
-/* Tablets and small laptops */
-@media (max-width: 900px) {
-  .content {
-    padding: 20px;
-  }
-  .top-nav {
-    padding: 15px 20px;
-  }
-}
-
-/* Mobile Phone*/
-@media (max-width: 600px) {
-  .top-nav {
-    flex-direction: column; 
-    gap: 15px;
-  }
-  
-  .profile-dropdown {
-    right: auto;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .sub-nav {
-    padding: 15px 0;
-  }
-
-  .sub-nav-tab {
-    padding: 8px 20px;
-    font-size: 14px;
-  }
-
-  .content {
-    padding: 15px 10px; 
-  }
-
-  .submit-button {
-    width: 100%;
-    justify-content: center;
-  }
 }

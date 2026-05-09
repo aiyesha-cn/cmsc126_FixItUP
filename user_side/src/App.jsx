@@ -64,7 +64,7 @@ const DashboardPage = ({ activeTab, userRequests, truncateString }) => {
                     userRequests.map(req => (
                         <div key={req.maintenance_request_id} style={{ 
                             width: '280px', 
-                            backgroundColor: '#ffffff', 
+                            backgroundColor: '#3a2c2c', 
                             borderRadius: '15px', 
                             padding: '20px', 
                             boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
@@ -98,7 +98,7 @@ const DashboardPage = ({ activeTab, userRequests, truncateString }) => {
                     ))
                 ) : (
                     <div style={{ width: '100%', textAlign: 'center', color: '#6c757d', marginTop: '40px' }}>
-                        <h3>No requests in the database</h3>
+                        <h3>No requests found</h3>
                         <p>Submit a new maintenance request to see it appear here.</p>
                     </div>
                 )}
@@ -221,7 +221,7 @@ useEffect(() => {
                 className={`sub-nav-tab ${location.pathname === '/my-requests' ? 'active' : ''}`}
                 onClick={() => handleTabClick('myRequests')}
             >
-                My Requests
+                Requests
             </Link>
         </div>
 
@@ -251,7 +251,7 @@ useEffect(() => {
             />
         </Routes>
         
-        {/* Footer Action - Button is now a functional link! */}
+        {/* Footer Action - Button functional link */}
         <footer className="footer-action">
             {/* Link component functionally changes the URL to '/submit-request' */}
             <Link to="/submit-request" className="submit-button" onClick={() => handleTabClick('')}>
