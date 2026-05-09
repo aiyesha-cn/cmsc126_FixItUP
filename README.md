@@ -12,7 +12,7 @@ Software used:
 - XAMPP
     - MySQL
 - Figma
-
+    
 Contributors:
 - Caña, Aiyesha Threa S.
 - Sumbeling, Vonne Chelsea Reese A.
