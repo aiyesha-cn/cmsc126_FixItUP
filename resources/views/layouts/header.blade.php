@@ -31,7 +31,12 @@
 
             <div class="text-sm font-medium text-gray-800">
                 @auth
-                    <a href="{{ url('/logout') }}" class="hover:underline text-red-600">Log Out</a>
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="px-5 py-2 bg-slate-900 text-white rounded-full hover:bg-amber-600 transition-all text-xs uppercase tracking-widest">
+                        Log Out
+                    </button>
+                </form>
                 @endauth
 
                 @guest

@@ -13,7 +13,9 @@ class UserInformation extends Authenticatable
     public $timestamps = false;
 
     protected $fillable = [
-        'name',
+        'user_first_name',
+        'user_last_name',
+        'role',
         'email',
         'password',
     ];

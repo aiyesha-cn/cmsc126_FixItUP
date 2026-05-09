@@ -18,7 +18,7 @@
             </p>
 
             <div class="mt-10">
-                <a href="#" 
+                <a href="{{ url('/register') }}" 
                    class="px-10 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-2xl shadow-amber-950/40 transition-all active:scale-95 inline-block text-center w-full sm:w-auto">
                     Get Started
                 </a>
