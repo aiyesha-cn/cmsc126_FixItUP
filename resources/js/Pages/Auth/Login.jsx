@@ -11,6 +11,7 @@ export default function Login() {
 
     function handleSubmit(e) {
         e.preventDefault();
+        console.log('submitting', data);
         post('/login');
     }
 

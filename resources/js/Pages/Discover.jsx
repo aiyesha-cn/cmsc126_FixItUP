@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import DashboardHeader from '@/Components/DashboardHeader';
 
-const DiscoverPage = () => {
+const Discover = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('All Categories');
 
@@ -56,6 +57,8 @@ const DiscoverPage = () => {
     });
 
     return (
+        <>
+        <DashboardHeader />
         <div className="discover-container">
             <header className="discover-header">
                 <h2>Community Discover</h2>
@@ -115,7 +118,8 @@ const DiscoverPage = () => {
                 ))}
             </div>
         </div>
+        </>
     );
 };
 
-export default DiscoverPage;
+export default Discover;
