@@ -46,7 +46,7 @@ class AuthController extends Controller
 
             return redirect('/dashboard');
         }
-
+    
         return back()->withErrors([
             'email' => 'Something went wrong, please try again.',
         ]);
