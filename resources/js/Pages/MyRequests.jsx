@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import DashboardHeader from '@/Components/DashboardHeader';
 
-const MyRequestsPage = () => {
+const MyRequests = () => {
 
     /*Dummy Data*/
     const myDummyRequests = [
@@ -45,6 +46,8 @@ const MyRequestsPage = () => {
     };
 
     return (
+        <>
+        <DashboardHeader />
         <div className="dashboard-container" style={{ paddingBottom: '100px' }}>
             <div className="dashboard-layout" style={{ gridTemplateColumns: '1fr' }}> 
                 <main className="dashboard-main">
@@ -139,7 +142,8 @@ const MyRequestsPage = () => {
                 </main>
             </div>
         </div>
+        </>
     );
 };
 
-export default MyRequestsPage;
+export default MyRequests;

@@ -32,4 +32,9 @@ class UserInformation extends Authenticatable
         ];
     }
 
+    public function getNameAttribute(): string
+    {
+        return $this->user_first_name . ' ' . $this->user_last_name;
+    }
+
 }

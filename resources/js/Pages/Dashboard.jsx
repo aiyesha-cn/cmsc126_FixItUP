@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import DashboardHeader from '@/Components/DashboardHeader';
+// import './App.css';
 
-const DashboardPage = ({ userRequests }) => {
+const Dashboard = ({ userRequests }) => {
 
     const [statusFilter, setStatusFilter] = useState('All'); 
     const [categoryFilter, setCategoryFilter] = useState('All Categories');
@@ -39,6 +41,8 @@ const DashboardPage = ({ userRequests }) => {
     });
 
     return (
+        <>
+        <DashboardHeader />
         <div className="dashboard-container">
             {/*Hero Section*/}
             <div className="hero-placeholder">Hero Image Placeholder (1600 x 300)</div>
@@ -141,7 +145,8 @@ const DashboardPage = ({ userRequests }) => {
                 </aside>
             </div>
         </div>
+    </>
     );
 };
 
-export default DashboardPage;
+export default Dashboard;
