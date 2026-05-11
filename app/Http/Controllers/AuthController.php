@@ -20,6 +20,20 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+        $user = \App\Models\UserInformation::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'No account found with this email.',
+            ]);
+        }
+
+        if (!\Hash::check($request->password, $user->password)) {
+            return back()->withErrors([
+                'password' => 'Incorrect password.',
+            ]);
+        }
+
         if (Auth::attempt($credentials)) {
 
             $request->session()->regenerate();
@@ -34,7 +48,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Invalid email or password.',
+            'email' => 'Something went wrong, please try again.',
         ]);
     }
 

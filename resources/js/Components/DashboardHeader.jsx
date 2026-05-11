@@ -3,6 +3,8 @@ import { Link, router, usePage } from '@inertiajs/react';
 
 export default function DashboardHeader() {
     const { auth } = usePage().props;
+    console.log('all props:', usePage().props); 
+    console.log(auth);
     const [dropdownVisible, setDropdownVisible] = useState(false);
 
     function handleLogout(e) {

@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -21,5 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-requests', fn() => Inertia::render('MyRequests'));
     Route::get('/submit-request', fn() => Inertia::render('RequestSubmission'));
     Route::get('/profile', fn() => Inertia::render('Profile'));
+    Route::post('/profile/update', [ProfileController::class, 'update']);
     Route::get('/settings', fn() => Inertia::render('Settings'));
+    Route::post('/settings/password', [ProfileController::class, 'updatePassword']);
 });
