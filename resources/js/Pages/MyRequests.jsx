@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import DashboardHeader from '@/Components/DashboardHeader';
 
 const MyRequests = () => {
-
     /*Dummy Data*/
     const myDummyRequests = [
         { 
@@ -46,35 +45,37 @@ const MyRequests = () => {
     };
 
     return (
-        <>
-        <DashboardHeader />
-        <div className="dashboard-container" style={{ paddingBottom: '100px' }}>
-            <div className="dashboard-layout" style={{ gridTemplateColumns: '1fr' }}> 
-                <main className="dashboard-main">
-                    <header className="content-header">
-                        <h2>Manage My Requests</h2>
+        <div className="bg-gray-50 min-h-screen font-sans">
+            <DashboardHeader />
+            
+            <div className="max-w-[1600px] mx-auto p-12 pb-24">
+                <main className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <header className="p-8 border-b border-slate-100">
+                        <h2 className="text-3xl font-bold text-slate-900">Manage My Requests</h2>
                     </header>
 
-                    {/*Table Header*/}
-                    <div className="requests-table-header">
+                    {/* Table Header - Using your specific grid definition */}
+                    <div className="grid grid-cols-[1.2fr_1.5fr_2.5fr_1fr] px-10 py-4 bg-slate-900 text-white font-bold text-xs uppercase tracking-widest">
                         <div>ID & Category</div>
                         <div>Issue Name</div>
                         <div>Location & Description</div>
-                        <div style={{ textAlign: 'center' }}>Actions</div>
+                        <div className="text-center">Actions</div>
                     </div>
 
-                    {/*Table Body*/}
-                    <div className="requests-table-body">
+                    {/* Table Body */}
+                    <div className="bg-white">
                         {requests.length > 0 ? (
                             requests.map(req => (
-                                <div key={req.maintenance_request_id} className="request-row">
+                                <div key={req.maintenance_request_id} 
+                                    className="grid grid-cols-[1.2fr_1.5fr_2.5fr_1fr] px-10 py-6 border-b border-slate-100 items-center last:border-b-0 hover:bg-slate-50 transition-colors"
+                                >
                                     
-                                    {/*C1: ID & Category*/}
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                        <span className="snippet-id">{req.maintenance_request_id}</span>
+                                    {/* C1: ID & Category */}
+                                    <div className="flex flex-col gap-2">
+                                        <span className="text-xs font-mono font-bold text-slate-400">{req.maintenance_request_id}</span>
                                         {req.isEditing ? (
                                             <select 
-                                                className="category-select"
+                                                className="p-2 border border-slate-300 rounded-md text-sm bg-white"
                                                 value={req.issue_category}
                                                 onChange={(e) => handleChange(req.maintenance_request_id, 'issue_category', e.target.value)}
                                             >
@@ -83,50 +84,52 @@ const MyRequests = () => {
                                                 <option value="Flooring">Flooring</option>
                                             </select>
                                         ) : (
-                                            <span className="category-pill">{req.issue_category}</span>
+                                            <span className="bg-slate-200 px-3 py-1 rounded-full text-xs text-slate-600 font-semibold w-fit">
+                                                {req.issue_category}
+                                            </span>
                                         )}
                                     </div>
 
-                                    {/*C2: Issue Name*/}
-                                    <div style={{ paddingRight: '20px' }}>
+                                    {/* C2: Issue Name */}
+                                    <div className="pr-5">
                                         {req.isEditing ? (
                                             <input 
-                                                className="edit-input"
+                                                className="w-full p-2 border border-slate-300 rounded-md font-inherit text-sm"
                                                 value={req.issue_name} 
                                                 onChange={(e) => handleChange(req.maintenance_request_id, 'issue_name', e.target.value)}
                                             />
                                         ) : (
-                                            <strong style={{ fontSize: '18px', color: '#1e293b' }}>{req.issue_name}</strong>
+                                            <strong className="text-lg text-slate-800 leading-tight">{req.issue_name}</strong>
                                         )}
                                     </div>
 
-                                    {/*C3: Location & Description*/}
-                                    <div style={{ paddingRight: '30px' }}>
-                                        <p style={{ fontSize: '15px', color: '#475569', fontWeight: '700', marginBottom: '4px' }}>
-                                            {req.location_display}
+                                    {/* C3: Location & Description */}
+                                    <div className="pr-8">
+                                        <p className="text-sm text-slate-700 font-bold mb-1">
+                                            📍 {req.location_display}
                                         </p>
                                         {req.isEditing ? (
                                             <textarea 
-                                                className="edit-textarea"
+                                                className="w-full p-2 border border-slate-300 rounded-md font-inherit text-sm h-20"
                                                 value={req.issue_description}
                                                 onChange={(e) => handleChange(req.maintenance_request_id, 'issue_description', e.target.value)}
                                             />
                                         ) : (
-                                            <p className="card-description" style={{ marginBottom: 0 }}>{req.issue_description}</p>
+                                            <p className="text-sm text-slate-500 leading-relaxed">{req.issue_description}</p>
                                         )}
                                     </div>
 
-                                    {/*C4: Actions*/}
-                                    <div className="action-group">
+                                    {/* C4: Actions */}
+                                    <div className="flex justify-center gap-3">
                                         <button 
                                             onClick={() => toggleEdit(req.maintenance_request_id)}
-                                            className={`filter-btn ${req.isEditing ? 'btn-save' : ''}`}
+                                            className={`${req.isEditing ? 'bg-emerald-500' : 'bg-slate-800'} text-white px-5 py-2 rounded-md font-semibold text-sm transition-all hover:brightness-110 shadow-sm`}
                                         >
                                             {req.isEditing ? 'Save' : 'Edit'}
                                         </button>
                                         <button 
                                             onClick={() => deleteRequest(req.maintenance_request_id)}
-                                            className="filter-btn btn-delete"
+                                            className="bg-red-500 text-white px-4 py-2 rounded-md font-semibold text-sm transition-all hover:bg-red-600 shadow-sm"
                                         >
                                             ✕
                                         </button>
@@ -134,15 +137,14 @@ const MyRequests = () => {
                                 </div>
                             ))
                         ) : (
-                            <div style={{ padding: '80px', textAlign: 'center', color: '#94a3b8' }}>
-                                <p>No maintenance requests found.</p>
+                            <div className="py-24 text-center">
+                                <p className="text-slate-400 text-lg">No maintenance requests found.</p>
                             </div>
                         )}
                     </div>
                 </main>
             </div>
         </div>
-        </>
     );
 };
 
