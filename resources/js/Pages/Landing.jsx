@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import Header from '@/Components/Header';
 import Footer from '@/Components/Footer';
 
@@ -37,11 +37,13 @@ const features = [
 ];
 
 export default function Landing() {
+    const { auth } = usePage().props;
+
     return (
         <>
             <Header absolute />
 
-            {/* Hero - no top padding needed since header overlaps */}
+            {/* Hero */}
             <section
                 id="hero"
                 className="relative min-h-screen flex items-center bg-cover bg-center"
@@ -63,13 +65,24 @@ export default function Landing() {
                             FixItUP is UP Mindanao's centralized platform for reporting and tracking campus facility issues.
                         </p>
 
-                        <div className="mt-10">
-                            <Link
-                                href="/register"
-                                className="px-10 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-2xl shadow-amber-950/40 transition-all active:scale-95 inline-block text-center w-full sm:w-auto"
-                            >
-                                Get Started
-                            </Link>
+                        <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                            {!auth?.user && (
+                                <Link
+                                    href="/register"
+                                    className="px-10 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-2xl shadow-amber-950/40 transition-all active:scale-95 inline-block text-center w-full sm:w-auto"
+                                >
+                                    Get Started
+                                </Link>
+                            )}
+
+                            {auth?.user && (
+                                <Link
+                                    href={auth.user.role === 'Administration' ? '/admin/dashboard' : '/dashboard'}
+                                    className="px-10 py-4 bg-amber-500 hover:bg-amber-500 text-white font-bold rounded-xl transition-all active:scale-95 inline-block text-center w-full sm:w-auto"
+                                >
+                                    Go to Dashboard
+                                </Link>
+                            )}
                         </div>
                     </div>
                 </div>

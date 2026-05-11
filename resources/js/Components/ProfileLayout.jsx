@@ -66,7 +66,7 @@ export default function ProfileLayout({ children }) {
                             <div className="absolute right-0 top-10 w-44 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
                                 <button
                                     onClick={(e) => { e.stopPropagation(); handleLogout(); }}
-                                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-500 hover:bg-gray-50"
+                                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:text-red-500"
                                 >
                                     <LogOut size={18} /> Logout
                                 </button>
