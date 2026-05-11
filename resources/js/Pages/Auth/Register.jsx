@@ -76,7 +76,7 @@ export default function Register() {
                                         <option value="" disabled className="bg-white text-slate-600">Select Role</option>
                                         <option value="Student" className="bg-white text-[#051622]">Student</option>
                                         <option value="Faculty" className="bg-white text-[#051622]">Faculty</option>
-                                        <option value="Administration" className="bg-white text-[#051622]">Administration</option>
+                                        {/* <option value="Administration" className="bg-white text-[#051622]">Administration</option> */}
                                         <option value="Staff" className="bg-white text-[#051622]">Staff</option>
                                         <option value="Other" className="bg-white text-[#051622]">Other</option>
                                     </select>

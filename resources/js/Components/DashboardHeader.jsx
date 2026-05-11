@@ -55,7 +55,7 @@ export default function DashboardHeader() {
                                     </Link>
                                     <hr className="border-gray-100" />
                                     <form onSubmit={handleLogout}>
-                                        <button type="submit" className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-500 hover:bg-gray-50 transition-colors">
+                                        <button type="submit" className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:text-red-500 transition-colors">
                                             <LogOut size={16} /> Logout
                                         </button>
                                     </form>
