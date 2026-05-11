@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
-import { CircleUser, Settings, LogOut } from 'lucide-react';
 
 export default function DashboardHeader() {
     const { auth } = usePage().props;
@@ -24,15 +23,14 @@ export default function DashboardHeader() {
 
                 {/* Desktop Nav Links */}
                 <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 lg:gap-10 text-sm font-medium text-gray-300">
-                    <Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
-                    <Link href="/discover" className="hover:text-white transition-colors">Discover</Link>
-                    <Link href="/my-requests" className="hover:text-white transition-colors">My Requests</Link>
+                    <Link href="/admin/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
+                    <Link href="/admin/requests" className="hover:text-white transition-colors">Requests</Link>
+                    <Link href="/admin/flagreports" className="hover:text-white transition-colors">Flag Reports</Link>
                 </div>
 
                 {/* Right side */}
                 <div className="flex items-center gap-3">
-
-                    {/* Profile Dropdown */}
+                    {/* Profile Dropdown — always visible */}
                     <div className="relative">
                         <div
                             onClick={() => setDropdownVisible(!dropdownVisible)}
@@ -40,7 +38,7 @@ export default function DashboardHeader() {
                         >
                             <span className="hidden md:inline">{fullName}</span>
                             <span className="md:hidden">{firstName}</span>
-                            <CircleUser size={18} />
+                            <span className="text-lg">👤</span>
                         </div>
 
                         {dropdownVisible && (
@@ -48,15 +46,15 @@ export default function DashboardHeader() {
                                 <div className="fixed inset-0 z-40" onClick={() => setDropdownVisible(false)} />
                                 <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
                                     <Link href="/profile" onClick={() => setDropdownVisible(false)} className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                        <CircleUser size={16} /> Profile
+                                        👤 Profile
                                     </Link>
                                     <Link href="/settings" onClick={() => setDropdownVisible(false)} className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                        <Settings size={16} /> Settings
+                                        ⚙️ Settings
                                     </Link>
                                     <hr className="border-gray-100" />
                                     <form onSubmit={handleLogout}>
                                         <button type="submit" className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-500 hover:bg-gray-50 transition-colors">
-                                            <LogOut size={16} /> Logout
+                                            🚪 Logout
                                         </button>
                                     </form>
                                 </div>

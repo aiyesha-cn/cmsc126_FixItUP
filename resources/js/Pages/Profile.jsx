@@ -1,99 +1,93 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useForm, usePage } from '@inertiajs/react';
 import ProfileLayout from '@/Components/ProfileLayout';
 
 export default function Profile() {
     const { auth } = usePage().props;
-    const [preview, setPreview] = useState(auth.user.photo_path
-        ? `/storage/${auth.user.photo_path}`
-        : null
-    );
 
     const { data, setData, post, processing, errors } = useForm({
-        user_first_name: auth.user.user_first_name ?? '',
-        user_last_name: auth.user.user_last_name ?? '',
+        user_first_name: auth.user.first_name ?? '',
+        user_last_name: auth.user.last_name ?? '',
         email: auth.user.email ?? '',
-        photo: null,
     });
 
-    useEffect(() => {
-        if (auth.user.photo_path && !preview?.startsWith('blob:')) {
-            setPreview(`/storage/${auth.user.photo_path}`);
-        }
-    }, [auth.user.photo_path]);
-
-    function handlePFPChange(e) {
-        const file = e.target.files[0];
-        if (file) {
-            if (preview?.startsWith('blob:')) {
-                URL.revokeObjectURL(preview);
-            }
-            setPreview(URL.createObjectURL(file));
-            setData('photo', file);
-        }
-    }
-
-    function handlePFPDelete() {
-        if (preview?.startsWith('blob:')) {
-            URL.revokeObjectURL(preview);
-        }
-        setPreview(null);
-        setData('photo', null);
-    }
-
-    function handlePFPSubmit(e) {
+    function handleProfileSubmit(e) {
         e.preventDefault();
-        post('/profile/update', { forceFormData: true });
+        post('/profile/update', { preserveScroll: true });
     }
 
     return (
         <ProfileLayout>
-            <h2>My Profile</h2>
+            <div className="p-4 sm:p-10 max-w-6xl">
+                <h3 className="text-2xl sm:text-4xl font-extrabold mb-6 sm:mb-10 text-gray-800">My Profile</h3>
 
-            <form onSubmit={handlePFPSubmit}>
-                <div>
-                    {preview ? (
-                        <img src={preview} alt="Profile" />
-                    ) : (
-                        <img src="/images/defaultPFP.png" alt="👤" />
-                    )}
+                <form onSubmit={handleProfileSubmit} className="space-y-6 sm:space-y-8">
+                    <h2 className="text-lg font-medium text-gray-700">Profile Information</h2>
 
-                    <div>
-                        <input type="file" id="photo" accept="image/*" onChange={handlePFPChange} className="hidden" />
-                        <label htmlFor="photo">Upload Photo</label>
-                        <button type="button" onClick={handlePFPDelete}>Delete</button>
-                    </div>
-                </div>
+                    {/* Row 1: First Name and Last Name */}
+                    <div className="flex flex-col sm:flex-row gap-6 sm:gap-10">
+                        <div className="w-full sm:w-1/3">
+                            <label className="block text-sm font-medium text-gray-500 mb-2">First Name</label>
+                            <input
+                                type="text"
+                                value={data.user_first_name}
+                                onChange={e => setData('user_first_name', e.target.value)}
+                                className="w-full h-12 bg-[#E5E5E5] border-none rounded px-4 focus:ring-2 focus:ring-blue-500"
+                            />
+                            {errors.user_first_name && <p className="text-red-500 text-xs mt-1">{errors.user_first_name}</p>}
+                        </div>
 
-                <div>
-                    <div>
-                        <h1>First Name</h1>
-                        <input type="text" value={data.user_first_name} onChange={e => setData('user_first_name', e.target.value)} />
-                        {errors.user_first_name && <p>{errors.user_first_name}</p>}
-                    </div>
-
-                    <div>
-                        <h1>Last Name</h1>
-                        <input type="text" value={data.user_last_name} onChange={e => setData('user_last_name', e.target.value)} />
-                        {errors.user_last_name && <p>{errors.user_last_name}</p>}
-                    </div>
-
-                    <div>
-                        <h1>Role</h1>
-                        <input type="text" value={auth.user.role ?? ''} disabled />
+                        <div className="w-full sm:w-1/3">
+                            <label className="block text-sm font-medium text-gray-500 mb-2">Last Name</label>
+                            <input
+                                type="text"
+                                value={data.user_last_name}
+                                onChange={e => setData('user_last_name', e.target.value)}
+                                className="w-full h-12 bg-[#E5E5E5] border-none rounded px-4 focus:ring-2 focus:ring-blue-500"
+                            />
+                            {errors.user_last_name && <p className="text-red-500 text-xs mt-1">{errors.user_last_name}</p>}
+                        </div>
                     </div>
 
-                    <div>
-                        <h1>Email</h1>
-                        <input type="email" value={data.email} onChange={e => setData('email', e.target.value)} />
-                        {errors.email && <p>{errors.email}</p>}
+                    {/* Row 2: Role */}
+                    <div className="flex flex-col sm:flex-row gap-6 sm:gap-10">
+                        <div className="w-full sm:w-1/3">
+                            <label className="block text-sm font-medium text-gray-500 mb-2">Account Role</label>
+                            <input
+                                type="text"
+                                value={auth.user.role ?? 'User'}
+                                disabled
+                                className="w-full h-12 bg-[#F0F0F0] border-none rounded px-4 text-gray-400 cursor-not-allowed italic"
+                            />
+                        </div>
                     </div>
-                </div>
 
-                <button type="submit" disabled={processing}>
-                    {processing ? 'Saving...' : 'Save Changes'}
-                </button>
-            </form>
+                    {/* Row 3: Email */}
+                    <div className="flex flex-col sm:flex-row gap-6 sm:gap-10">
+                        <div className="w-full sm:w-1/3">
+                            <label className="block text-sm font-medium text-gray-500 mb-2">Email Address</label>
+                            <input
+                                type="email"
+                                value={data.email}
+                                onChange={e => setData('email', e.target.value)}
+                                className="w-full h-12 bg-[#E5E5E5] border-none rounded px-4 focus:ring-2 focus:ring-blue-500"
+                            />
+                            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                        </div>
+                    </div>
+
+                    {/* Submit */}
+                    <div className="pt-2 sm:pt-4">
+                        <button
+                            type="submit"
+                            disabled={processing}
+                            className="w-full sm:w-auto bg-slate-900 hover:bg-amber-600 text-white px-12 py-3 rounded text-sm font-semibold transition disabled:opacity-50"
+                        >
+                            {processing ? 'Saving...' : 'Update'}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </ProfileLayout>
     );
 }
