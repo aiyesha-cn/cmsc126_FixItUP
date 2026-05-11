@@ -20,5 +20,5 @@ html, body {
     padding: 0;
     overflow-x: hidden;
     height: 100%;
-    overscroll-behavior: none
+    overscroll-behavior: none /*prevents the pages from being basta dli ma bira2 na murag bubblegum*/
 }

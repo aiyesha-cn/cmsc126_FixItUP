@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminDashboardController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -26,4 +27,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/update', [ProfileController::class, 'update']);
     Route::get('/settings', fn() => Inertia::render('Settings'));
     Route::post('/settings/password', [ProfileController::class, 'updatePassword']);
+});
+
+Route::middleware(['auth', 'role:Administration'])->group(function () {
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/requests', [AdminDashboardController::class, 'Requests'])->name('admin.requests');
+    Route::get('/admin/flagreports', [AdminDashboardController::class, 'FlagReports'])->name('admin.flagreports');
 });
