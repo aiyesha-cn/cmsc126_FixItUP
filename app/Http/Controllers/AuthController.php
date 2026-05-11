@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\UserInformation;
+use Inertia\Inertia;
 
 class AuthController extends Controller
 {
     public function showLogin() {
-        return view('auth.login');
+        return Inertia::render('Auth/Login');
     }
 
     public function login(Request $request){
@@ -18,6 +19,20 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
+
+        $user = \App\Models\UserInformation::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'No account found with this email.',
+            ]);
+        }
+
+        if (!\Hash::check($request->password, $user->password)) {
+            return back()->withErrors([
+                'password' => 'Incorrect password.',
+            ]);
+        }
 
         if (Auth::attempt($credentials)) {
 
@@ -33,12 +48,12 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Invalid email or password.',
+            'email' => 'Something went wrong, please try again.',
         ]);
     }
 
     public function showRegister() {
-        return view('auth.register');
+        return Inertia::render('Auth/Register');
     }
 
     public function register(Request $request) {
