@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
+import { CircleUser, LogOut } from 'lucide-react';
 import Sidebar from '@/Components/Sidebar';
 
 export default function ProfileLayout({ children }) {
@@ -21,7 +22,7 @@ export default function ProfileLayout({ children }) {
                         onClick={() => setDropdownVisible(!dropdownVisible)}
                     >
                         <span>{auth?.user?.name ?? 'User'}</span>
-                        <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">👤</div>
+                        <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center"><CircleUser size={18} /></div>
 
                         {dropdownVisible && (
                             <div className="absolute right-0 top-10 w-44 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
@@ -30,7 +31,7 @@ export default function ProfileLayout({ children }) {
                                     onClick={(e) => { e.stopPropagation(); handleLogout(); }}
                                     className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-500 hover:bg-gray-50"
                                 >
-                                    🚪 Logout
+                                    <LogOut size={18} />Logout
                                 </button>
                             </div>
                         )}
