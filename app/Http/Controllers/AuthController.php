@@ -1,0 +1,89 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\UserInformation;
+use Inertia\Inertia;
+
+class AuthController extends Controller
+{
+    public function showLogin() {
+        return Inertia::render('Auth/Login');
+    }
+
+    public function login(Request $request){
+
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = \App\Models\UserInformation::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'No account found with this email.',
+            ]);
+        }
+
+        if (!\Hash::check($request->password, $user->password)) {
+            return back()->withErrors([
+                'password' => 'Incorrect password.',
+            ]);
+        }
+
+        if (Auth::attempt($credentials)) {
+
+            $request->session()->regenerate();
+
+            $user = Auth::user();
+
+            if ($user->role === 'Administration') {
+                return redirect('/admin/dashboard');
+            }
+
+            return redirect('/dashboard');
+        }
+
+        return back()->withErrors([
+            'email' => 'Something went wrong, please try again.',
+        ]);
+    }
+
+    public function showRegister() {
+        return Inertia::render('Auth/Register');
+    }
+
+    public function register(Request $request) {
+
+        $validated = $request->validate([
+            'user_first_name' => 'required',
+            'user_last_name' => 'required',
+            'role' => 'required|in:Student,Faculty,Administration,Staff,Other',
+            'email' => 'required|email|unique:user_information|ends_with:@up.edu.ph',
+            'password' => 'required|min:6',
+        ]);
+
+        $user = UserInformation::create($validated);
+
+        Auth::login($user);
+
+        if ($user->role === 'Administration') {
+            return redirect('/admin/dashboard');
+        }
+
+        return redirect('/dashboard');
+    }
+
+    public function logout(Request $request) {
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
+    }
+}
