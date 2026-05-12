@@ -6,11 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class MaintenanceImage extends Model
 {
-    protected $table = 'maintenance_image';
+    protected $table      = 'maintenance_image';
     protected $primaryKey = 'image_id';
-    public $timestamps = false;
+    public $timestamps    = false;
 
-    public function request() {
+    protected $fillable = [
+        'maintenance_request_id',
+        'image_path',
+        'image_description',
+        'is_primary',
+        'uploaded_at',
+    ];
+
+    // The request this image belongs to
+    public function request()
+    {
         return $this->belongsTo(MaintenanceRequest::class, 'maintenance_request_id');
     }
 }
