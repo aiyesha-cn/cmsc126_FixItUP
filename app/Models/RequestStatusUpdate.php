@@ -6,19 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class RequestStatusUpdate extends Model
 {
-    protected $table = 'request_status_upadate'; // keep this EXACT
+    protected $table      = 'request_status_update';
     protected $primaryKey = 'status_id';
-    public $timestamps = false;
+    public $timestamps    = false;
 
-    public function request() {
+    protected $fillable = [
+        'maintenance_request_id', 'status',
+        'updated_by', 'update_note', 'date_updated',
+    ];
+
+    // The request this status update belongs to
+    public function request()
+    {
         return $this->belongsTo(MaintenanceRequest::class, 'maintenance_request_id');
     }
 
-    public function location() {
-        return $this->belongsTo(FacilityLocation::class, 'location_id');
+    // Location reference on the status update
+    public function location()
+    {
+        return $this->belongsTo(FacilityLocationDetails::class, 'location_id');
     }
 
-    public function updatedBy() {
+    // Admin or user who made the update
+    public function updatedBy()
+    {
         return $this->belongsTo(UserInformation::class, 'updated_by');
     }
 }

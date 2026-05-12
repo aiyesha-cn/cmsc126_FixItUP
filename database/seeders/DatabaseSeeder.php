@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
                 'user_first_name' => 'Admin',
                 'user_last_name'  => 'User',
                 'role'            => 'Administration',
-                'password'        => bcrypt('123456'), //your-secure-password
+                'password'        => bcrypt('123456'), 
             ]
         );
     }
