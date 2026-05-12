@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import { CircleUser, LogOut } from 'lucide-react';
 import Sidebar from '@/Components/Sidebar';
@@ -9,6 +9,21 @@ export default function ProfileLayout({ children }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const firstName = auth?.user?.name?.split(' ')[0] ?? 'User';
     const fullName = auth?.user?.name ?? 'User';
+    const dashboardLink = auth?.user?.role === 'Administration' ? '/admin/dashboard' : '/dashboard';
+
+    // for notification pagmagchange ng user details and password
+    const [toast, setToast] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = router.on('success', (event) => {
+            const successMsg = event.detail?.page?.props?.flash?.success;
+            if (successMsg) {
+                setToast(successMsg);
+                setTimeout(() => setToast(null), 3000);
+            }
+        });
+        return () => unsubscribe();
+    }, []);
 
     function handleLogout() {
         router.post('/logout');
@@ -31,7 +46,7 @@ export default function ProfileLayout({ children }) {
                 lg:static lg:translate-x-0
                 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
-                <Sidebar />
+                <Sidebar dashboardLink={dashboardLink} />
             </div>
 
             {/* Main content */}
@@ -64,6 +79,7 @@ export default function ProfileLayout({ children }) {
 
                         {dropdownVisible && (
                             <div className="absolute right-0 top-10 w-44 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
+                                <hr className="border-gray-100" />
                                 <button
                                     onClick={(e) => { e.stopPropagation(); handleLogout(); }}
                                     className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:text-red-500"
@@ -75,10 +91,17 @@ export default function ProfileLayout({ children }) {
                     </div>
                 </div>
 
-                {/* Page content */}
+                {/* Profile/Settings */}
                 <div className="flex-1 overflow-y-auto p-5 sm:p-8">
                     {children}
                 </div>
+
+                {/* Toast */}
+                {toast && (
+                    <div className="fixed top-53 right-175 z-50 bg-amber-400 text-white text-sm font-medium px-5 py-3 rounded-xl shadow-lg flex items-center gap-2">
+                        ✅ {toast}
+                    </div>
+                )}
             </div>
         </div>
     );

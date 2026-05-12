@@ -3,8 +3,7 @@ import { useForm, usePage } from '@inertiajs/react';
 import ProfileLayout from '@/Components/ProfileLayout';
 
 export default function Profile() {
-    const { auth } = usePage().props;
-
+    const { auth, flash } = usePage().props;
     const { data, setData, post, processing, errors } = useForm({
         user_first_name: auth.user.first_name ?? '',
         user_last_name: auth.user.last_name ?? '',
@@ -15,10 +14,10 @@ export default function Profile() {
         e.preventDefault();
         post('/profile/update', { preserveScroll: true });
     }
-
+// className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
     return (
         <ProfileLayout>
-            <div className="p-4 sm:p-10 max-w-6xl">
+            <div className="p-6 sm:p-10 max-w-6xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"> 
                 <h3 className="text-2xl sm:text-4xl font-extrabold mb-6 sm:mb-10 text-gray-800">My Profile</h3>
 
                 <form onSubmit={handleProfileSubmit} className="space-y-6 sm:space-y-8">
@@ -77,7 +76,7 @@ export default function Profile() {
                     </div>
 
                     {/* Submit */}
-                    <div className="pt-2 sm:pt-4">
+                    <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                         <button
                             type="submit"
                             disabled={processing}

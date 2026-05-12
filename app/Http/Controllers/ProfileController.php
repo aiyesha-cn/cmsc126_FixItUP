@@ -31,7 +31,7 @@ class ProfileController extends Controller
         unset($validated['photo']);
         $user->update($validated);
 
-        return back()->with('success', 'Profile updated!');
+        return back()->with('success', 'Profile Updated!');
     }
 
     public function updatePassword(Request $request)
@@ -50,9 +50,9 @@ class ProfileController extends Controller
         }
 
         $user->update([
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
         ]);
 
-        return back()->with('success', 'Password updated!');
+        return back()->with('success', 'Password changed successfully.');
     }
 }

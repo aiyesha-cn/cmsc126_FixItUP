@@ -1,0 +1,162 @@
+import React, { useState } from 'react';
+import { router } from '@inertiajs/react';
+import DashboardHeader from '@/Components/Admin/DashboardHeader';
+
+const STATUS_STYLES = {
+    'Pending':      'bg-amber-100 text-amber-700',
+    'Reviewed':     'bg-blue-100 text-blue-700',
+    'Dismissed':    'bg-slate-200 text-slate-600',
+    'Action Taken': 'bg-emerald-100 text-emerald-700',
+};
+
+const FlagReports = ({ flags = [] }) => {
+    const [expandedId, setExpandedId] = useState(null);
+
+    // Local state for unsaved status/note edits per flag (keyed by raw_id)
+    const [notes,    setNotes]    = useState({});
+    const [statuses, setStatuses] = useState({});
+
+    const getStatus = (flag) => statuses[flag.raw_id] ?? flag.status;
+    const getNote   = (flag) => notes[flag.raw_id]   ?? flag.admin_note;
+
+    // Persist status and note changes to DB, then close the panel
+    const saveFlag = (flag) => {
+        router.put(`/admin/flagreports/${flag.raw_id}`, {
+            status:     getStatus(flag),
+            admin_note: getNote(flag),
+        }, {
+            preserveScroll: true,
+            onSuccess: () => setExpandedId(null),
+        });
+    };
+
+    // Quick dismiss without opening the review panel
+    const dismissFlag = (flag) => {
+        router.put(`/admin/flagreports/${flag.raw_id}`, {
+            status:     'Dismissed',
+            admin_note: getNote(flag),
+        }, { preserveScroll: true });
+    };
+
+    const toggleExpand = (id) => setExpandedId(expandedId === id ? null : id);
+    const pendingCount = flags.filter(f => f.status === 'Pending').length;
+
+    return (
+        <div className="relative z-10">
+            <DashboardHeader />
+
+            <div className="max-w-[1600px] mx-auto p-12 pb-24">
+                <main className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+
+                    {/* Page header with pending count badge */}
+                    <header className="p-8 border-b border-slate-100 flex items-center justify-between">
+                        <div>
+                            <h2 className="text-3xl font-bold text-slate-900">Flag Reports</h2>
+                            <p className="text-slate-400 text-sm mt-1">Review and act on flagged maintenance requests</p>
+                        </div>
+                        <span className="bg-amber-100 text-amber-700 text-sm font-semibold px-4 py-1.5 rounded-full">
+                            {pendingCount} Pending
+                        </span>
+                    </header>
+
+                    {/* Table header */}
+                    <div className="grid grid-cols-[1fr_1.5fr_1.2fr_1.2fr_1fr_1fr] px-10 py-4 bg-slate-900 text-white font-bold text-xs uppercase tracking-widest">
+                        <div>Flag ID</div>
+                        <div>Flagged Request</div>
+                        <div>Flagged By</div>
+                        <div>Reason</div>
+                        <div className="text-center">Status</div>
+                        <div className="text-center">Actions</div>
+                    </div>
+
+                    {/* Table rows */}
+                    <div className="bg-white">
+                        {flags.length > 0 ? flags.map(flag => (
+                            <div key={flag.flag_id} className="border-b border-slate-100 last:border-b-0">
+
+                                {/* Main row */}
+                                <div className="grid grid-cols-[1fr_1.5fr_1.2fr_1.2fr_1fr_1fr] px-10 py-5 items-center hover:bg-slate-50 transition-colors">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-xs font-mono font-bold text-slate-400">{flag.flag_id}</span>
+                                        <span className="text-xs text-slate-400">{flag.date_flagged}</span>
+                                    </div>
+                                    <div className="pr-4">
+                                        <p className="text-sm font-bold text-slate-800">{flag.issue_name}</p>
+                                        <p className="text-xs font-mono text-slate-400">{flag.maintenance_request_id}</p>
+                                    </div>
+                                    <div className="text-sm text-slate-600">{flag.flagged_by}</div>
+                                    <div>
+                                        <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                            {flag.flag_reason}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-center">
+                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${STATUS_STYLES[getStatus(flag)]}`}>
+                                            {getStatus(flag)}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-center gap-2">
+                                        <button onClick={() => toggleExpand(flag.flag_id)}
+                                            className="bg-slate-800 text-white px-4 py-2 rounded-md text-sm font-semibold hover:brightness-110 shadow-sm">
+                                            {expandedId === flag.flag_id ? 'Close' : 'Review'}
+                                        </button>
+                                        <button onClick={() => dismissFlag(flag)}
+                                            className="bg-slate-100 text-slate-500 px-3 py-2 rounded-md text-sm font-semibold hover:bg-slate-200">
+                                            ✕
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Expanded review panel */}
+                                {expandedId === flag.flag_id && (
+                                    <div className="mx-10 mb-6 p-6 bg-slate-50 rounded-xl border border-slate-200">
+                                        <div className="grid grid-cols-2 gap-6">
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Flag Description</p>
+                                                <p className="text-sm text-slate-700 leading-relaxed">{flag.flag_description}</p>
+                                            </div>
+                                            <div className="flex flex-col gap-4">
+                                                <div>
+                                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Update Status</p>
+                                                    <select
+                                                        value={getStatus(flag)}
+                                                        onChange={e => setStatuses(s => ({ ...s, [flag.raw_id]: e.target.value }))}
+                                                        className="w-full p-2 border border-slate-300 rounded-md text-sm bg-white"
+                                                    >
+                                                        <option>Pending</option>
+                                                        <option>Reviewed</option>
+                                                        <option>Dismissed</option>
+                                                        <option>Action Taken</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Admin Note</p>
+                                                    <textarea
+                                                        value={getNote(flag)}
+                                                        onChange={e => setNotes(n => ({ ...n, [flag.raw_id]: e.target.value }))}
+                                                        placeholder="Add a note about this flag..."
+                                                        className="w-full p-2 border border-slate-300 rounded-md text-sm h-20 resize-none"
+                                                    />
+                                                </div>
+                                                <button onClick={() => saveFlag(flag)}
+                                                    className="bg-emerald-500 text-white px-5 py-2 rounded-md text-sm font-semibold hover:bg-emerald-600 self-end">
+                                                    Save & Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )) : (
+                            <div className="py-24 text-center">
+                                <p className="text-slate-400 text-lg">No flagged reports found.</p>
+                            </div>
+                        )}
+                    </div>
+                </main>
+            </div>
+        </div>
+    );
+};
+
+export default FlagReports;

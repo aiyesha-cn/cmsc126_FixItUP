@@ -13,14 +13,13 @@ class AuthController extends Controller
         return Inertia::render('Auth/Login');
     }
 
-    public function login(Request $request){
-
+    public function login(Request $request) {
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
 
-        $user = \App\Models\UserInformation::where('email', $request->email)->first();
+        $user = UserInformation::where('email', $request->email)->first();
 
         if (!$user) {
             return back()->withErrors([
@@ -34,8 +33,7 @@ class AuthController extends Controller
             ]);
         }
 
-        if (Auth::attempt($credentials)) {
-
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
             $user = Auth::user();
@@ -46,7 +44,7 @@ class AuthController extends Controller
 
             return redirect('/dashboard');
         }
-    
+
         return back()->withErrors([
             'email' => 'Something went wrong, please try again.',
         ]);
@@ -57,28 +55,22 @@ class AuthController extends Controller
     }
 
     public function register(Request $request) {
-
         $validated = $request->validate([
             'user_first_name' => 'required',
-            'user_last_name' => 'required',
-            'role' => 'required|in:Student,Faculty,Administration,Staff,Other',
-            'email' => 'required|email|unique:user_information|ends_with:@up.edu.ph',
-            'password' => 'required|min:6',
+            'user_last_name'  => 'required',
+            'role'            => 'required|in:Student,Faculty,Staff,Other', // allows all user role except admin
+            'email'           => 'required|email|unique:user_information|ends_with:@up.edu.ph',
+            'password'        => 'required|min:6',
         ]);
 
         $user = UserInformation::create($validated);
 
         Auth::login($user);
 
-        if ($user->role === 'Administration') {
-            return redirect('/admin/dashboard');
-        }
-
         return redirect('/dashboard');
     }
 
     public function logout(Request $request) {
-
         Auth::logout();
 
         $request->session()->invalidate();
@@ -86,4 +78,4 @@ class AuthController extends Controller
 
         return redirect()->route('login');
     }
-}
+}   

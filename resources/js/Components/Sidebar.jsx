@@ -1,10 +1,8 @@
 import React from 'react';
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { User, Settings, LayoutDashboard } from 'lucide-react';
 
-export default function Sidebar() {
-    const { auth } = usePage().props;
-
+export default function Sidebar({ dashboardLink = '/dashboard' }) {
     return (
         <nav className="w-60 min-h-screen bg-[#0a1628] flex flex-col justify-between px-6 py-8 items-center">
 
@@ -22,7 +20,7 @@ export default function Sidebar() {
             </div>
 
             <div>
-                <Link href="/dashboard" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors underline">
+                <Link href={dashboardLink} className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors underline">
                     <LayoutDashboard size={18} /> Dashboard
                 </Link>
             </div>
