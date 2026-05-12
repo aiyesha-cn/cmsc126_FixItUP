@@ -51,7 +51,7 @@ export default function AdminDashboard({ stats, users_by_role, top_locations, pe
     const total     = roles.reduce((s, r) => s + r.count, 0);
 
     return (
-        <div className="bg-gray-50 min-h-screen font-sans">
+        <div className="relative z-10">
             <DashboardHeader />
 
             <div className="max-w-5xl mx-auto px-6 py-10 flex flex-col gap-10">

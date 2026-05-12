@@ -81,10 +81,13 @@ class AdminDashboardController extends Controller
                 'issue_category'         => $r->issue_category,
                 'equipment_name'         => $r->equipment_name,
                 'location_display'       => $r->location?->location_name . ' - ' . $r->location?->building_name,
+                'room_details'       => $r->location?->room_details,
                 'issue_description'      => $r->issue_description,
                 'submitted_by'           => $r->user?->user_first_name . ' ' . substr($r->user?->user_last_name, 0, 1) . '.',
                 'date_submitted'         => $r->date_submitted,
                 'status'                 => $r->status,
+                'image_path'             => $r->images->first()?->image_path,
+                'location_description'   => $r->location?->location_description,
             ]);
 
         return Inertia::render('Admin/Requests', ['requests' => $requests]);

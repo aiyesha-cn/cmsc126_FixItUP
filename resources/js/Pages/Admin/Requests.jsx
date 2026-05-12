@@ -44,7 +44,7 @@ const Requests = ({ requests = [] }) => {
     const pendingCount  = requests.filter(r => r.status === 'Pending').length;
 
     return (
-        <div className="bg-gray-50 min-h-screen font-sans">
+        <div className="relative z-10">
             <DashboardHeader />
 
             <div className="max-w-[1600px] mx-auto p-12 pb-24">
@@ -102,6 +102,7 @@ const Requests = ({ requests = [] }) => {
                                         <span className="text-xs font-mono font-bold text-slate-400">{req.maintenance_request_id}</span>
                                         <span className="text-xs text-slate-400">{req.date_submitted}</span>
                                     </div>
+
                                     <div className="pr-4">
                                         <p className="text-sm font-bold text-slate-800 leading-tight">{req.issue_name}</p>
                                         {req.equipment_name && (
@@ -111,10 +112,21 @@ const Requests = ({ requests = [] }) => {
                                             {req.issue_category}
                                         </span>
                                     </div>
+
                                     <div className="text-sm text-slate-600 font-medium">{req.submitted_by}</div>
-                                    <div className="flex items-center gap-1 text-sm text-slate-600">
+                                    
+                                    <div>
+                                        <div className="flex items-center gap-1 text-sm text-slate-600">
                                         <MapPin size={14} className="shrink-0" /> {req.location_display}
-                                    </div>
+                                        </div>
+
+                                        <div>
+                                            {req.room_details && (
+                                            <p className="text-xs text-slate-400 mt-0.5"> {req.room_details}</p>
+                                        )}
+                                        </div> 
+                                    </div> 
+
                                     <div className="flex justify-center">
                                         <select
                                             value={req.status}
@@ -132,7 +144,7 @@ const Requests = ({ requests = [] }) => {
                                             {expandedId === req.maintenance_request_id ? 'Close' : 'View'}
                                         </button>
                                         <button onClick={() => deleteRequest(req.raw_id)}
-                                            className="bg-red-500 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-red-600 shadow-sm">
+                                            className="bg-amber-400 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-red-600 shadow-sm">
                                             ✕
                                         </button>
                                     </div>
@@ -142,10 +154,23 @@ const Requests = ({ requests = [] }) => {
                                 {expandedId === req.maintenance_request_id && (
                                     <div className="mx-8 mb-6 p-6 bg-slate-50 rounded-xl border border-slate-200">
                                         <div className="grid grid-cols-2 gap-6">
+
+                                            {/* will show the img */}
                                             <div>
-                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Issue Description</p>
-                                                <p className="text-sm text-slate-700 leading-relaxed">{req.issue_description}</p>
+                                            {req.image_path && (
+                                                <div>
+                                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Image</p>
+                                                    <img
+                                                        src={`/storage/${req.image_path}`}
+                                                        alt="maintenance_image"
+                                                        className="rounded-lg border border-slate-200 max-h-64 object-cover w-full cursor-pointer"
+                                                        onClick={() => window.open(`/storage/${req.image_path}`, '_blank')}
+                                                    />
+                                                </div>
+                                            )}
                                             </div>
+
+                                            {/* status */}
                                             <div className="flex flex-col gap-3">
                                                 <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Update Status</p>
                                                 <select value={req.status}
@@ -155,8 +180,28 @@ const Requests = ({ requests = [] }) => {
                                                     <option>Work-In-Progress</option>
                                                     <option>Fixed</option>
                                                 </select>
+
+                                                {/* descrip - only shows when the user inputs in either of them*/}
+                                            
+                                                {req.issue_description && (
+                                                    <div>
+                                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Issue Description</p>
+                                                        <div className="bg-white border border-slate-200 rounded-lg p-2">
+                                                            <p className="text-sm text-slate-700 leading-relaxed">{req.issue_description}</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                {req.location_description && (
+                                                    <div>
+                                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Location Description</p>
+                                                        <div className="bg-white border border-slate-200 rounded-lg p-2">
+                                                            <p className="text-sm text-slate-700 leading-relaxed">{req.location_description}</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+
                                                 <button onClick={() => toggleExpand(req.maintenance_request_id)}
-                                                    className="bg-emerald-500 text-white px-5 py-2 rounded-md text-sm font-semibold hover:bg-emerald-600 self-end mt-auto">
+                                                    className="bg-emerald-500 text-white px-5 py-2 rounded-md text-sm font-semibold hover:bg-amber-500 self-end mt-auto">
                                                     Close
                                                 </button>
                                             </div>

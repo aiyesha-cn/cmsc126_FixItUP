@@ -42,7 +42,7 @@ const FlagReports = ({ flags = [] }) => {
     const pendingCount = flags.filter(f => f.status === 'Pending').length;
 
     return (
-        <div className="bg-gray-50 min-h-screen font-sans">
+        <div className="relative z-10">
             <DashboardHeader />
 
             <div className="max-w-[1600px] mx-auto p-12 pb-24">

@@ -19,7 +19,7 @@ export default function SecuritySettings() {
 
     return (
         <ProfileLayout>
-            <div className="p-4 sm:p-10 max-w-6xl">
+            <div className="p-6 sm:p-10 max-w-6xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <h3 className="text-2xl sm:text-4xl font-extrabold mb-6 sm:mb-10 text-gray-800">Settings</h3>
 
                 <form onSubmit={handlePassSubmit} className="space-y-6 sm:space-y-8">
