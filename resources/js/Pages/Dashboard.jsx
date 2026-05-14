@@ -28,9 +28,19 @@ const Dashboard = ({ userRequests = [] }) => {
         .slice(0, 5);
 
     return (
-        <>
+        <div
+            className="min-h-screen font-sans"
+            style={{
+                backgroundImage: "url('/images/bg4.jpg')",
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                backgroundAttachment: 'fixed',
+            }}
+        >
+
             <DashboardHeader />
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8 lg:gap-12 p-4 md:p-8 lg:p-12 max-w-[1600px] mx-auto bg-gray-50 font-sans">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8 lg:gap-12 p-4 md:p-8 lg:p-12 max-w-[1600px] mx-auto font-sans">
 
                 <main>
                     {/* Hero banner placeholder */}
@@ -171,7 +181,7 @@ const Dashboard = ({ userRequests = [] }) => {
                     <span className="text-2xl">+</span> Submit New Request
                 </a>
             </div>
-        </>
+        </div>
     );
 };
 
