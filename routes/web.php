@@ -42,4 +42,5 @@ Route::middleware(['auth', 'role:Administration'])->group(function () {
     Route::put('/admin/requests/{id}/status',  [AdminDashboardController::class, 'updateRequestStatus'])->name('admin.requests.status');
     Route::delete('/admin/requests/{id}',      [AdminDashboardController::class, 'deleteRequest'])->name('admin.requests.delete');
     Route::put('/admin/flagreports/{id}',      [AdminDashboardController::class, 'updateFlag'])->name('admin.flags.update');
+    Route::delete('/admin/flagreports/{id}', [AdminDashboardController::class, 'deleteFlag']);
 });
