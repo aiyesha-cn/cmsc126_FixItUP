@@ -26,9 +26,9 @@ export default function DashboardHeader() {
 
                 {/* Desktop nav links */}
                 <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 lg:gap-10 text-sm font-medium text-gray-300">
-                    <Link href="/admin/dashboard"  className="hover:text-white transition-colors">Dashboard</Link>
-                    <Link href="/admin/requests"   className="hover:text-white transition-colors">Requests</Link>
-                    <Link href="/admin/flagreports" className="hover:text-white transition-colors">Flag Reports</Link>
+                    <Link href="/admin/dashboard"  className="hover:text-amber-400 transition-colors">Dashboard</Link>
+                    <Link href="/admin/requests"   className="hover:text-amber-400 transition-colors">Requests</Link>
+                    <Link href="/admin/flagreports" className="hover:text-amber-400 transition-colors">Flag Reports</Link>
                 </div>
 
                 <div className="flex items-center gap-3">
