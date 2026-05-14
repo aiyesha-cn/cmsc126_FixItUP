@@ -3,7 +3,7 @@ import { useForm, router } from '@inertiajs/react';
 import DashboardHeader from '@/Components/DashboardHeader';
 
 const CATEGORIES     = ['Facility', 'Appliance', 'Equipment', 'Flooring', 'Other'];
-const LOCATION_NAMES = ['CSM', 'CHSS', 'Atrium', 'DHK', 'SOM', 'SportsComplex'];
+const LOCATION_NAMES = ['CSM', 'CHSS', 'Atrium', 'DHK', 'SOM', 'Sports Complex'];
 
 export default function EditRequest({ request }) {
     const { data, setData, post, processing, errors } = useForm({

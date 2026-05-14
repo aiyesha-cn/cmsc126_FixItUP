@@ -12,7 +12,7 @@ const STATUS_STYLES = {
 const FLAG_REASONS   = ['Duplicate', 'Spam', 'False Report', 'Inappropriate Content', 'Already Fixed', 'Other'];
 const CATEGORIES     = ['All Categories', 'Facility', 'Appliance', 'Equipment', 'Flooring', 'Other'];
 const ROLES          = ['All Roles', 'Student', 'Faculty', 'Staff', 'Administration', 'Other'];
-const LOCATION_NAMES = ['All Locations', 'CSM', 'CHSS', 'Atrium', 'DHK', 'SOM', 'SportsComplex'];
+const LOCATION_NAMES = ['All Locations', 'CSM', 'CHSS', 'Atrium', 'DHK', 'SOM', 'Sports Complex'];
 
 // Modal for submitting a flag report on a specific request
 const FlagModal = ({ request, onClose }) => {
