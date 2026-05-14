@@ -51,7 +51,10 @@ export default function AdminDashboard({ stats, users_by_role, top_locations, pe
     const total     = roles.reduce((s, r) => s + r.count, 0);
 
     return (
-        <div className="relative z-10">
+        <div
+    className="relative min-h-screen"
+    style={{ backgroundImage: "url('/images/bg4.jpg')", backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}
+>
             <DashboardHeader />
 
             <div className="max-w-5xl mx-auto px-6 py-10 flex flex-col gap-10">
