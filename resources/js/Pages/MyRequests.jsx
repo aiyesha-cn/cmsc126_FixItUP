@@ -1,5 +1,6 @@
 import React from 'react';
 import { router } from '@inertiajs/react';
+import { MapPin } from 'lucide-react';
 import DashboardHeader from '@/Components/DashboardHeader';
 
 const STATUS_STYLES = {
@@ -64,7 +65,7 @@ const MyRequests = ({ myRequests = [] }) => {
 
                                 {/* Location and description */}
                                 <div className="pr-8">
-                                    <p className="text-sm text-slate-700 font-bold mb-1">📍 {req.location_display}</p>
+                                    <p className="text-sm text-slate-700 font-bold mb-1 flex items-center gap-1"> <MapPin size={14} className="shrink-0" /> {req.location_display}</p>
                                     <p className="text-sm text-slate-500 leading-relaxed">{req.issue_description}</p>
                                 </div>
 
