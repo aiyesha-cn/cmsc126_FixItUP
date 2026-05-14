@@ -29,6 +29,7 @@ class RequestController extends Controller
                 'status'                 => $r->status,
                 'date_submitted'         => $r->date_submitted,
                 'image_path'             => $r->images->where('is_primary', 1)->first()?->image_path,
+                'raw_id'                 => $r->maintenance_request_id,
             ]);
 
         return Inertia::render('Dashboard', ['userRequests' => $userRequests]);
@@ -48,7 +49,9 @@ class RequestController extends Controller
                 'issue_category'         => $r->issue_category,
                 'issue_description'      => $r->issue_description,
                 'location_display'       => $r->location?->location_name . ' - ' . $r->location?->building_name,
+                'location_name'          => $r->location?->location_name, // for filter
                 'submitted_by'           => $r->user?->user_first_name . ' ' . substr($r->user?->user_last_name, 0, 1) . '.',
+                'user_role'              => $r->user?->role, // for filter
                 'date_submitted'         => $r->date_submitted,
                 'status'                 => $r->status,
                 'image_path'             => $r->images->where('is_primary', 1)->first()?->image_path,

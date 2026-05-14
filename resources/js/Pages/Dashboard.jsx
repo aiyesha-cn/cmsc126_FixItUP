@@ -90,8 +90,10 @@ const Dashboard = ({ userRequests = [] }) => {
                         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
                             {filtered.map(req => (
                                 <div key={req.maintenance_request_id}
-                                    className="bg-white rounded-2xl border border-slate-200 overflow-hidden transition-transform duration-300 hover:shadow-xl lg:hover:-translate-y-2"
+                                    onClick={() => router.visit(`/requests/${req.raw_id}/edit`)}
+                                    className="bg-white rounded-2xl border border-slate-200 overflow-hidden transition-transform duration-300 hover:shadow-xl lg:hover:-translate-y-2 cursor-pointer"
                                 >
+                                    
                                     {/* Card banner — uploaded image or amber fallback */}
                                     <div className="h-40 relative overflow-hidden">
                                         {req.image_path ? (

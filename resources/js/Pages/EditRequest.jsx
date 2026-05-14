@@ -35,7 +35,7 @@ export default function EditRequest({ request }) {
         <div className="min-h-screen bg-slate-50 font-sans pb-20">
             <DashboardHeader />
 
-            <div className="max-w-[1200px] mx-auto px-4 md:px-10">
+            <div className="max-w-[1000px] mx-auto px-4 md:px-10">
 
                 {/* Page header with back navigation */}
                 <header className="py-10">
@@ -50,7 +50,7 @@ export default function EditRequest({ request }) {
                 </header>
 
                 <form
-                    className="bg-white p-6 md:p-12 rounded-3xl border border-slate-200 shadow-xl max-w-[1000px] mx-auto"
+                    className="bg-white p-6 md:p-12 rounded-3xl border border-slate-200 shadow-xl"
                     onSubmit={handleSubmit}
                 >
                     <div className="flex flex-col lg:flex-row justify-between gap-12">
@@ -147,7 +147,7 @@ export default function EditRequest({ request }) {
                     {/* Form actions */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12 pt-8 border-t border-slate-100">
                         <button type="button" onClick={() => router.visit('/my-requests')}
-                            className="w-full sm:w-auto px-10 py-4 text-slate-500 font-bold hover:text-red-800 transition-colors">
+                            className="w-full sm:w-auto bg-slate-200 hover:bg-red-800 hover:text-white text-slate-700 px-16 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:-translate-y-1 shadow-xl">
                             Cancel
                         </button>
                         <button type="submit" disabled={processing}
