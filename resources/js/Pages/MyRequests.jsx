@@ -65,7 +65,13 @@ const MyRequests = ({ myRequests = [] }) => {
 
                                 {/* Location and description */}
                                 <div className="pr-8">
+<<<<<<< HEAD
+                                    <p className="text-sm text-slate-700 font-bold mb-1 flex items-center gap-1">
+                                        <MapPin size={13} className="shrink-0" /> {req.location_display}
+                                    </p>
+=======
                                     <p className="text-sm text-slate-700 font-bold mb-1 flex items-center gap-1"> <MapPin size={14} className="shrink-0" /> {req.location_display}</p>
+>>>>>>> 679602ba684c1daf34fcbcd5c80ac5b5a0c83721
                                     <p className="text-sm text-slate-500 leading-relaxed">{req.issue_description}</p>
                                 </div>
 

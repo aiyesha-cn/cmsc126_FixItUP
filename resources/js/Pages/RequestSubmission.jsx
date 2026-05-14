@@ -137,7 +137,7 @@ const RequestSubmission = () => {
                     {/* Form actions */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12 pt-8 border-t border-slate-100">
                         <button type="button" onClick={() => window.history.back()}
-                            className="w-full sm:w-auto px-10 py-4 text-slate-500 font-bold hover:text-slate-800 transition-colors">
+                            className="w-full sm:w-auto bg-slate-200 hover:bg-red-500 hover:text-white text-slate-700 px-16 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:-translate-y-1 shadow-xl">
                             Cancel
                         </button>
                         <button type="submit" disabled={processing}

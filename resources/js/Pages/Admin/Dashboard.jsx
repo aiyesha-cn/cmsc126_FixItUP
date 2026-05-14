@@ -24,7 +24,7 @@ const DUMMY_ROLES = [
 const DUMMY_LOCATIONS = [
     { location: 'DHK - Delos Santos Hall',    open: 8 },
     { location: 'SOM - School of Management', open: 5 },
-    { location: 'SportsComplex - Main Court', open: 3 },
+    { location: 'Sports Complex - Main Court', open: 3 },
     { location: 'CSM - Building A',           open: 2 },
     { location: 'Atrium',                     open: 1 },
 ];
