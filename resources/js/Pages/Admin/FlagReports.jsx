@@ -41,7 +41,10 @@ const FlagReports = ({ flags = [] }) => {
     const pendingCount = flags.filter(f => f.status === 'Pending').length;
 
     return (
-        <div className="relative z-10">
+        <div className="relative min-h-screen"
+        style={{ backgroundImage: "url('/images/bg4.jpg')", backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}
+        >
+            
             <DashboardHeader />
 
             <div className="max-w-[1600px] mx-auto p-12 pb-24">
