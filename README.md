@@ -6,11 +6,14 @@ The key objective of this project is to provide the community within the campus 
 
 Software used:
 - PHP (Laravel)
+- Inertia.js
 - React.js
+    - Lucide-react
 - HTML
 - Tailwind CSS
 - XAMPP
     - MySQL
+    - Apache
 - Figma
     
 Contributors:
