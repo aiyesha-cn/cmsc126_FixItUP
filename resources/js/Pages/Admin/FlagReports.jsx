@@ -17,7 +17,7 @@ const FlagReports = ({ flags = [] }) => {
     const [statuses, setStatuses] = useState({});
 
     const getStatus = (flag) => statuses[flag.raw_id] ?? flag.status;
-    const getNote   = (flag) => notes[flag.raw_id]   ?? flag.admin_note;
+    const getNote   = (flag) => notes[flag.raw_id]   ?? flag.admin_note ?? '';
 
     // Persist status and note changes to DB, then close the panel
     const saveFlag = (flag) => {
@@ -30,12 +30,11 @@ const FlagReports = ({ flags = [] }) => {
         });
     };
 
-    // Quick dismiss without opening the review panel
-    const dismissFlag = (flag) => {
-        router.put(`/admin/flagreports/${flag.raw_id}`, {
-            status:     'Dismissed',
-            admin_note: getNote(flag),
-        }, { preserveScroll: true });
+    // Delete flag report with confirmation
+    const deleteRequest = (rawId) => {
+        if (window.confirm('Are you sure you want to remove this request?')) {
+            router.delete(`/admin/flagreports/${rawId}`, { preserveScroll: true });
+        }
     };
 
     const toggleExpand = (id) => setExpandedId(expandedId === id ? null : id);
@@ -96,40 +95,85 @@ const FlagReports = ({ flags = [] }) => {
                                         </span>
                                     </div>
                                     <div className="flex justify-center gap-2">
-                                        <button onClick={() => toggleExpand(flag.flag_id)}
-                                            className="bg-slate-800 text-white px-4 py-2 rounded-md text-sm font-semibold hover:brightness-110 shadow-sm">
+                                        <button
+                                            onClick={() => toggleExpand(flag.flag_id)}
+                                            className="bg-slate-800 text-white px-4 py-2 rounded-md text-sm font-semibold hover:brightness-110 shadow-sm"
+                                        >
                                             {expandedId === flag.flag_id ? 'Close' : 'Review'}
                                         </button>
-                                        <button onClick={() => dismissFlag(flag)}
-                                            className="bg-slate-100 text-slate-500 px-3 py-2 rounded-md text-sm font-semibold hover:bg-slate-200">
+                                        <button
+                                            onClick={() => deleteRequest(flag.raw_id)}
+                                            className="bg-amber-400 text-white px-4 py-2 rounded-md font-semibold text-sm hover:bg-red-600 shadow-sm"
+                                        >
                                             ✕
                                         </button>
                                     </div>
                                 </div>
 
-                                {/* Expanded review panel */}
+                                {/* Expanded detail panel */}
                                 {expandedId === flag.flag_id && (
-                                    <div className="mx-10 mb-6 p-6 bg-slate-50 rounded-xl border border-slate-200">
+                                    <div className="mx-8 mb-6 p-6 bg-slate-50 rounded-xl border border-slate-200">
                                         <div className="grid grid-cols-2 gap-6">
+
+                                            {/* Left column — will show the img + flag description */}
                                             <div>
-                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Flag Description</p>
-                                                <p className="text-sm text-slate-700 leading-relaxed">{flag.flag_description}</p>
-                                            </div>
-                                            <div className="flex flex-col gap-4">
-                                                <div>
-                                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Update Status</p>
-                                                    <select
-                                                        value={getStatus(flag)}
-                                                        onChange={e => setStatuses(s => ({ ...s, [flag.raw_id]: e.target.value }))}
-                                                        className="w-full p-2 border border-slate-300 rounded-md text-sm bg-white"
-                                                    >
-                                                        <option>Pending</option>
-                                                        <option>Reviewed</option>
-                                                        <option>Dismissed</option>
-                                                        <option>Action Taken</option>
-                                                    </select>
+                                                {flag.image_path && (
+                                                    <div>
+                                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Image</p>
+                                                        <img
+                                                            src={`/storage/${flag.image_path}`}
+                                                            alt="maintenance_image"
+                                                            className="rounded-lg border border-slate-200 max-h-64 object-cover w-full cursor-pointer"
+                                                            onClick={() => window.open(`/storage/${flag.image_path}`, '_blank')}
+                                                        />
+                                                    </div>
+                                                )}
+
+                                                {/* Flag Description */}
+                                                <div className="mt-4">
+                                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Flag Description</p>
+                                                    <div className="bg-white border border-slate-200 rounded-lg p-2">
+                                                        <p className="text-sm text-slate-700 leading-relaxed">{flag.flag_description}</p>
+                                                    </div>
                                                 </div>
-                                                <div>
+                                            </div>
+
+                                            {/* Right column — status, descriptions, admin note */}
+                                            <div className="flex flex-col gap-3">
+
+                                                {/* Status */}
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Update Status</p>
+                                                <select
+                                                    value={getStatus(flag)}
+                                                    onChange={e => setStatuses(s => ({ ...s, [flag.raw_id]: e.target.value }))}
+                                                    className="p-2 border border-slate-300 rounded-md text-sm bg-white"
+                                                >
+                                                    <option>Pending</option>
+                                                    <option>Reviewed</option>
+                                                    <option>Dismissed</option>
+                                                    <option>Action Taken</option>
+                                                </select>
+
+                                                {/* descrip - only shows when the user inputs in either of them */}
+                                                {flag.issue_description && (
+                                                    <div>
+                                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Issue Description</p>
+                                                        <div className="bg-white border border-slate-200 rounded-lg p-2">
+                                                            <p className="text-sm text-slate-700 leading-relaxed">{flag.issue_description}</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                {flag.location_description && (
+                                                    <div>
+                                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Location Description</p>
+                                                        <div className="bg-white border border-slate-200 rounded-lg p-2">
+                                                            <p className="text-sm text-slate-700 leading-relaxed">{flag.location_description}</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Admin Note */}
+                                                <div className="mt-6">
                                                     <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Admin Note</p>
                                                     <textarea
                                                         value={getNote(flag)}
@@ -138,8 +182,11 @@ const FlagReports = ({ flags = [] }) => {
                                                         className="w-full p-2 border border-slate-300 rounded-md text-sm h-20 resize-none"
                                                     />
                                                 </div>
-                                                <button onClick={() => saveFlag(flag)}
-                                                    className="bg-emerald-500 text-white px-5 py-2 rounded-md text-sm font-semibold hover:bg-emerald-600 self-end">
+
+                                                <button
+                                                    onClick={() => saveFlag(flag)}
+                                                    className="bg-emerald-500 text-white px-5 py-2 rounded-md text-sm font-semibold hover:bg-amber-500 self-end mt-auto"
+                                                >
                                                     Save & Close
                                                 </button>
                                             </div>
