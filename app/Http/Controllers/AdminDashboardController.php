@@ -31,7 +31,7 @@ class AdminDashboardController extends Controller
         $top_locations = MaintenanceRequest::with('location')
             ->whereIn('status', ['Pending', 'Work-In-Progress'])
             ->get()
-            ->groupBy('location_id')
+            ->groupBy(fn($r) => $r->location?->location_name . ' - ' . $r->location?->building_name)
             ->map(fn($group) => [
                 'location' => $group->first()->location?->location_name . ' - ' . $group->first()->location?->building_name,
                 'open'     => $group->count(),

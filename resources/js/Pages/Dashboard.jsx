@@ -34,8 +34,12 @@ const Dashboard = ({ userRequests = [] }) => {
 
                 <main>
                     {/* Hero banner placeholder */}
-                    <div className="mb-8 bg-slate-200 h-[200px] md:h-[300px] rounded-2xl flex items-center justify-center italic text-slate-400 text-center px-4">
-                        Hero Image Placeholder (1600 x 300)
+                    <div className="mb-8 rounded-2xl overflow-hidden h-[200px] md:h-[300px]">
+                        <img
+                            src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZDJ2bWI1aXFqajdzenpiZTl0aXNvc2Nwcm44YnB5b3RpbGU5MjB3ZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/SphdK3sFxFYZy/giphy.gif"
+                            alt="hero"
+                            className="w-full h-full object-cover object-bottom"
+                        />
                     </div>
 
                     <header>
