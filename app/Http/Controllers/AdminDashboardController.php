@@ -84,6 +84,7 @@ class AdminDashboardController extends Controller
                 'room_details'       => $r->location?->room_details,
                 'issue_description'      => $r->issue_description,
                 'submitted_by'           => $r->user?->user_first_name . ' ' . substr($r->user?->user_last_name, 0, 1) . '.',
+                'role'                   => $r->user?->role,
                 'date_submitted'         => $r->date_submitted,
                 'status'                 => $r->status,
                 'image_path'             => $r->images->first()?->image_path,
@@ -96,23 +97,31 @@ class AdminDashboardController extends Controller
     // All flagged reports list
     public function FlagReports()
     {
-        $flags = FlaggedReport::with('request', 'flaggedBy', 'reviewedBy')
-            ->latest('date_flagged')
-            ->get()
-            ->map(fn($f) => [
-                'raw_id'                 => $f->flag_id,
-                'flag_id'                => 'FLAG-' . str_pad($f->flag_id, 3, '0', STR_PAD_LEFT),
-                'maintenance_request_id' => 'REQ-' . str_pad($f->maintenance_request_id, 3, '0', STR_PAD_LEFT),
-                'issue_name'             => $f->request?->issue_name,
-                'flagged_by'             => $f->flaggedBy?->user_first_name . ' ' . $f->flaggedBy?->user_last_name,
-                'flag_reason'            => $f->flag_reason,
-                'flag_description'       => $f->flag_description,
-                'status'                 => $f->status,
-                'admin_note'             => $f->admin_note ?? '',
-                'date_flagged'           => $f->date_flagged,
-            ]);
+        $flags = FlaggedReport::with('request.images', 'request.location', 'flaggedBy', 'reviewedBy')
+        ->latest('date_flagged')
+        ->get()
+        ->map(fn($f) => [
+            'raw_id'                 => $f->flag_id,
+            'flag_id'                => 'FLAG-' . str_pad($f->flag_id, 3, '0', STR_PAD_LEFT),
+            'maintenance_request_id' => 'REQ-' . str_pad($f->maintenance_request_id, 3, '0', STR_PAD_LEFT),
+            'issue_name'             => $f->request?->issue_name,
+            'flagged_by'             => $f->flaggedBy?->user_first_name . ' ' . $f->flaggedBy?->user_last_name,
+            'flag_reason'            => $f->flag_reason,
+            'flag_description'       => $f->flag_description,
+            'issue_description'      => $f->request?->issue_description,
+            'location_description'   => $f->request?->location?->location_description,
+            'status'                 => $f->status,
+            'admin_note'             => $f->admin_note ?? '',
+            'date_flagged'           => $f->date_flagged,
+            'image_path'             => $f->request?->images->where('is_primary', 1)->first()?->image_path,
+        ]);
 
         return Inertia::render('Admin/FlagReports', ['flags' => $flags]);
+    }
+
+    public function deleteFlag($id) {
+        FlaggedReport::findorFail($id)->delete();
+        return back()->with('success', 'Flag removed.');
     }
 
     // Update request status and log the action

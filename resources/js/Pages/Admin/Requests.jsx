@@ -112,8 +112,11 @@ const Requests = ({ requests = [] }) => {
                                             {req.issue_category}
                                         </span>
                                     </div>
-
-                                    <div className="text-sm text-slate-600 font-medium">{req.submitted_by}</div>
+                                    
+                                    <div>
+                                        <div className="text-sm text-slate-600 font-medium">{req.submitted_by}</div>
+                                        <div className="text-xs text-slate-400 mt-0.5">{req.role}</div>
+                                    </div>
                                     
                                     <div>
                                         <div className="flex items-center gap-1 text-sm text-slate-600">
@@ -202,7 +205,7 @@ const Requests = ({ requests = [] }) => {
 
                                                 <button onClick={() => toggleExpand(req.maintenance_request_id)}
                                                     className="bg-emerald-500 text-white px-5 py-2 rounded-md text-sm font-semibold hover:bg-amber-500 self-end mt-auto">
-                                                    Close
+                                                    Save & Close
                                                 </button>
                                             </div>
                                         </div>
