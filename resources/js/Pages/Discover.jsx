@@ -119,7 +119,10 @@ const Discover = ({ requests = [] }) => {
     };
 
     return (
-        <div className="bg-gray-50 min-h-screen font-sans">
+        <div
+            className="min-h-screen font-sans"
+            style={{ backgroundImage: "url('/images/bg4.jpg')", backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}
+        >
             <DashboardHeader />
 
             {/* Flag modal */}
